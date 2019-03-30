@@ -54,7 +54,10 @@ const fileRow = {
   borderBottom: '1px dashed #ccc',
   paddingLeft: 10
 }
-
+const fileList = {
+  height: 476,
+  overflow: 'auto'
+}
 const fileSelectedRow = {
   height: 40,
   lineHeight: '40px',
@@ -125,19 +128,21 @@ export default class FileUploader extends Component {
         <div  style={mainContainer}>
           <div style={fileListContainer}>
             <div style={fileListHeader}> File List </div>
-            {uploadedFiles.length > 0 && uploadedFiles.map(function(object, i){
-                if(selectedIndex !== i) {
-                  return <div className={"row "} onClick={()=>context.clickFile(i)} style={fileRow} key={i}> 
-                    <FontAwesomeIcon icon={faImage} style={{marginRight: 10}} />
-                    {object.file.original_name}
-                  </div>; 
-                } else {
-                  return <div className={"row "} onClick={()=>context.clickFile(i)} style={fileSelectedRow} key={i}> 
-                    <FontAwesomeIcon icon={faImage} />
-                    {object.file.original_name}
-                  </div>; 
-                }
-              })}
+            <div style={fileList}>
+              {uploadedFiles.length > 0 && uploadedFiles.map(function(object, i){
+                  if(selectedIndex !== i) {
+                    return <div className={"row "} onClick={()=>context.clickFile(i)} style={fileRow} key={i}> 
+                      <FontAwesomeIcon icon={faImage} style={{marginRight: 10}} />
+                      {object.file.original_name}
+                    </div>; 
+                  } else {
+                    return <div className={"row "} onClick={()=>context.clickFile(i)} style={fileSelectedRow} key={i}> 
+                      <FontAwesomeIcon icon={faImage} />
+                      {object.file.original_name}
+                    </div>; 
+                  }
+                })}
+              </div>
           </div>
           <div style={imagePreview}>
               {(selectedFile) && (
