@@ -3,5 +3,8 @@ Extract Image with AWS Rekognition
 
 # run
 
-meteor npm install
-meteor
+- meteor npm install
+
+- meteor
+
+- localhost:3000
