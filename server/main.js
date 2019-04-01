@@ -7,10 +7,10 @@ function insertLink(title, url) {
 }
 
 S3.config = {
-	key: 'AKIAJU6YGTPMVXHQGQPA',
-	secret: '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',
-	bucket: 'meteor-files-2019',
-	region: 'us-east-2' // Only needed if not "us-east-1" or "us-standard"
+  key: '--',
+  secret: '--',  
+	bucket: '--',
+	region: '--' // Only needed if not "us-east-1" or "us-standard"
 };
 
 Meteor.startup(() => {

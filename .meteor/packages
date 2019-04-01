@@ -22,3 +22,4 @@ react-meteor-data       # React higher-order component for reactively tracking M
 lepozepo:s3
 underscore
 fortawesome:fontawesome
+http

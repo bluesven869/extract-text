@@ -106,7 +106,7 @@ export default class FileUploader extends Component {
   }
 
   onAnalyse = () => {
-
+    Meteor.call('analyseImage', {imageName: this.selectedFile.url});
   }
 
   render() {
@@ -137,7 +137,7 @@ export default class FileUploader extends Component {
                     </div>; 
                   } else {
                     return <div className={"row "} onClick={()=>context.clickFile(i)} style={fileSelectedRow} key={i}> 
-                      <FontAwesomeIcon icon={faImage} />
+                      <FontAwesomeIcon icon={faImage} style={{marginRight: 10}} />
                       {object.file.original_name}
                     </div>; 
                   }
