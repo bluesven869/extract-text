@@ -15,6 +15,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "aws-sdk": "^2.431.0",
+    "dotenv": "^7.0.0",
     "images": "^3.0.2",
     "lodash": "^4.17.11",
     "meteor-node-stubs": "^0.4.1",

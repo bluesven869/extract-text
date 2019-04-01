@@ -1,60 +1,53 @@
 import { Meteor } from 'meteor/meteor';
-import Links from '/imports/api/links';
 import AWS from 'aws-sdk';
 
-function insertLink(title, url) {
-  Links.insert({ title, url, createdAt: new Date() });
-}
+
+AWS.config.update({
+  accessKeyId: Meteor.settings.AWS_KEY,
+  secretAccessKey: Meteor.settings.AWS_SECURITY_KEY,
+  region: Meteor.settings.AWS_S3_REGION,
+  
+});
 
 S3.config = {
-  key: '--',
-  secret: '--',  
-	bucket: '--',
-	region: '--' // Only needed if not "us-east-1" or "us-standard"
+  key: Meteor.settings.AWS_KEY,
+  secret: Meteor.settings.AWS_SECURITY_KEY,  
+	bucket: Meteor.settings.AWS_S3_BUCKET,
+	region: Meteor.settings.AWS_S3_REGION,
 };
 
 Meteor.startup(() => {
-  // If the Links collection is empty, add some data.
-  
-  if (Links.find().count() === 0) {
-    insertLink(
-      'Do the Tutorial',
-      'https://www.meteor.com/tutorials/react/creating-an-app'
-    );
 
-    insertLink(
-      'Follow the Guide',
-      'http://guide.meteor.com'
-    );
-
-    insertLink(
-      'Read the Docs',
-      'https://docs.meteor.com'
-    );
-
-    insertLink(
-      'Discussions',
-      'https://forums.meteor.com'
-    );
-  }
 });
 
 Meteor.methods({
-  'analyseImage'({ imageName }) {
-    var rekognition = new AWS.Rekognition();
+  'analyseImage'({ S3File }, callback) {
+    
+    var rekognition = new AWS.Rekognition({
+      region: Meteor.settings.AWS_S3_REGION,
+      accessKeyId: Meteor.settings.AWS_KEY,
+      secretAccessKey: Meteor.settings.AWS_SECURITY_KEY,
+
+    });
+    
     var params = {
-      Image: { /* required */
-        // Bytes: new Buffer('...') || 'STRING_VALUE' /* Strings will be Base-64 encoded on your behalf */,
+      Image: {
         S3Object: {
-          Bucket: 'meteor-files-2019',
-          Name: 'files/' + imageName,
-          // Version: 'STRING_VALUE'
+          Bucket: Meteor.settings.AWS_S3_BUCKET,
+          Name: S3File.relative_url.substr(1)
         }
       }
     };
-    rekognition.detectText(params, function(err, data) {
-      if (err) console.log(err, err.stack); // an error occurred
-      else     console.log(data);           // successful response
-    });
+
+    const response = new Promise(resolve => {
+      rekognition.detectText(params, function(err, data) {
+        if (err) console.log(err, err.stack); // an error occurred
+        else {
+          // console.log(data);           // successful response
+          resolve(data);
+        }
+      });
+    })
+    return response;
   }
 });
